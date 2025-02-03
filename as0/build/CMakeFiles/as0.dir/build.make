@@ -69,28 +69,28 @@ include CMakeFiles/as0.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/as0.dir/flags.make
 
-CMakeFiles/as0.dir/src/helloworld.cpp.o: CMakeFiles/as0.dir/flags.make
-CMakeFiles/as0.dir/src/helloworld.cpp.o: ../src/helloworld.cpp
-CMakeFiles/as0.dir/src/helloworld.cpp.o: CMakeFiles/as0.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/CS381/as0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/as0.dir/src/helloworld.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/as0.dir/src/helloworld.cpp.o -MF CMakeFiles/as0.dir/src/helloworld.cpp.o.d -o CMakeFiles/as0.dir/src/helloworld.cpp.o -c /mnt/c/CS381/as0/src/helloworld.cpp
+CMakeFiles/as0.dir/src/as0.cpp.o: CMakeFiles/as0.dir/flags.make
+CMakeFiles/as0.dir/src/as0.cpp.o: ../src/as0.cpp
+CMakeFiles/as0.dir/src/as0.cpp.o: CMakeFiles/as0.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/CS381/as0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/as0.dir/src/as0.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/as0.dir/src/as0.cpp.o -MF CMakeFiles/as0.dir/src/as0.cpp.o.d -o CMakeFiles/as0.dir/src/as0.cpp.o -c /mnt/c/CS381/as0/src/as0.cpp
 
-CMakeFiles/as0.dir/src/helloworld.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/as0.dir/src/helloworld.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/CS381/as0/src/helloworld.cpp > CMakeFiles/as0.dir/src/helloworld.cpp.i
+CMakeFiles/as0.dir/src/as0.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/as0.dir/src/as0.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/CS381/as0/src/as0.cpp > CMakeFiles/as0.dir/src/as0.cpp.i
 
-CMakeFiles/as0.dir/src/helloworld.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/as0.dir/src/helloworld.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/CS381/as0/src/helloworld.cpp -o CMakeFiles/as0.dir/src/helloworld.cpp.s
+CMakeFiles/as0.dir/src/as0.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/as0.dir/src/as0.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/CS381/as0/src/as0.cpp -o CMakeFiles/as0.dir/src/as0.cpp.s
 
 # Object files for target as0
 as0_OBJECTS = \
-"CMakeFiles/as0.dir/src/helloworld.cpp.o"
+"CMakeFiles/as0.dir/src/as0.cpp.o"
 
 # External object files for target as0
 as0_EXTERNAL_OBJECTS =
 
-as0: CMakeFiles/as0.dir/src/helloworld.cpp.o
+as0: CMakeFiles/as0.dir/src/as0.cpp.o
 as0: CMakeFiles/as0.dir/build.make
 as0: raylib-cpp/raylib/raylib/libraylib.a
 as0: /usr/lib/x86_64-linux-gnu/libOpenGL.so

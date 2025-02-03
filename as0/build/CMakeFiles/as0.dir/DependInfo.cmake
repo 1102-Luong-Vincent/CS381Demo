@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/mnt/c/CS381/as0/src/helloworld.cpp" "CMakeFiles/as0.dir/src/helloworld.cpp.o" "gcc" "CMakeFiles/as0.dir/src/helloworld.cpp.o.d"
+  "/mnt/c/CS381/as0/src/as0.cpp" "CMakeFiles/as0.dir/src/as0.cpp.o" "gcc" "CMakeFiles/as0.dir/src/as0.cpp.o.d"
   )
 
 # Targets to which this target links.

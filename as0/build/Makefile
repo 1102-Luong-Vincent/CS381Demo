@@ -285,29 +285,29 @@ libfastsignals/fast:
 	$(MAKE) $(MAKESILENT) -f raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/build.make raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/build
 .PHONY : libfastsignals/fast
 
-src/helloworld.o: src/helloworld.cpp.o
-.PHONY : src/helloworld.o
+src/as0.o: src/as0.cpp.o
+.PHONY : src/as0.o
 
 # target to build an object file
-src/helloworld.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/as0.dir/build.make CMakeFiles/as0.dir/src/helloworld.cpp.o
-.PHONY : src/helloworld.cpp.o
+src/as0.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/as0.dir/build.make CMakeFiles/as0.dir/src/as0.cpp.o
+.PHONY : src/as0.cpp.o
 
-src/helloworld.i: src/helloworld.cpp.i
-.PHONY : src/helloworld.i
+src/as0.i: src/as0.cpp.i
+.PHONY : src/as0.i
 
 # target to preprocess a source file
-src/helloworld.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/as0.dir/build.make CMakeFiles/as0.dir/src/helloworld.cpp.i
-.PHONY : src/helloworld.cpp.i
+src/as0.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/as0.dir/build.make CMakeFiles/as0.dir/src/as0.cpp.i
+.PHONY : src/as0.cpp.i
 
-src/helloworld.s: src/helloworld.cpp.s
-.PHONY : src/helloworld.s
+src/as0.s: src/as0.cpp.s
+.PHONY : src/as0.s
 
 # target to generate assembly for a file
-src/helloworld.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/as0.dir/build.make CMakeFiles/as0.dir/src/helloworld.cpp.s
-.PHONY : src/helloworld.cpp.s
+src/as0.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/as0.dir/build.make CMakeFiles/as0.dir/src/as0.cpp.s
+.PHONY : src/as0.cpp.s
 
 # Help Target
 help:
@@ -331,9 +331,9 @@ help:
 	@echo "... libfastsignals"
 	@echo "... raylib"
 	@echo "... tst"
-	@echo "... src/helloworld.o"
-	@echo "... src/helloworld.i"
-	@echo "... src/helloworld.s"
+	@echo "... src/as0.o"
+	@echo "... src/as0.i"
+	@echo "... src/as0.s"
 .PHONY : help
 
 
