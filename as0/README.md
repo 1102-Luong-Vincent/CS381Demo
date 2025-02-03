@@ -6,10 +6,10 @@ To make a window resizable, we use the Raylib C++ library function, `SetState()`
 To keep text centered in a resizing window, you use the `MeasureText()` function, which allows you to determine the total width of the text. Then, use the `GetHeight()` and `GetWidth()` library functions, subtract the size of the text from the total width and divide by 2. This is because `GetHeight()` and `GetWidth()` functions references the entire dimensions of the window and dividing the width and height with the text in half will keep the text centered in a resizing window. 
 
 # Question 2: How to fetch my git submodules:
-First use the command: `git clone https://github.com/1102-Luong-Vincent/CS381Demo`
+First use the command: `git clone https://github.com/1102-Luong-Vincent/CS381Demo.git`
     - This clones into my repository for GitHub.
 
-Then use the commands: `git submodule init` and `git submodule update --init --recursive`
+Then use the command: `git submodule update --init --recursive`
     - This clones all of the Raylib's dependencies to our folder and that allows us to use Raylib libraries and functions for our code. 
 
 This is how to fetch my git submodules. 
