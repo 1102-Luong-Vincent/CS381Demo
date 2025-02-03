@@ -9,6 +9,8 @@ To keep text centered in a resizing window, you use the `MeasureText()` function
 First use the command: `git clone https://github.com/1102-Luong-Vincent/CS381Demo.git`
     - This clones into my repository for GitHub.
 
+Make sure to be in the as0 folder before continuing: `cd as0`
+
 Then use the command: `git submodule update --init --recursive`
     - This clones all of the Raylib's dependencies to our folder and that allows us to use Raylib libraries and functions for our code. 
 
