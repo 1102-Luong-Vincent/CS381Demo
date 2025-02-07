@@ -19,10 +19,10 @@ int main(){
             if(leftMovement > 100){
                 rightMovement = false;
             }
-        }    
+        }
             else{
                 leftMovement -= movementSpeed; //change direction
-                
+
                 if(leftMovement < -100){
                     rightMovement = true; //change direction
                 }
