@@ -2,11 +2,21 @@
 To fetch my git submodules, use the commands:
 ```bash
 git clone https://github.com/1102-Luong-Vincent/CS381Demo.git
+cd CS381Demo
 cd as1
-mkdir build && cd build
-ln -s ../as0/raylib-cpp/ ./raylib-cpp
+git submodule update --init --recursive
 ```
-This is how you fetch my git submodules.
+This is you fetch my git submodules.
+
+Make sure to delete the build folder before proceeding:
+```bash
+rm -rf build
+```
+In as1 folder:
+```bash
+ln -s ../as0/raylib-cpp/ ./raylib-cpp
+mkdir build && cd build
+```
 
 # How to compile my code:
 Make sure you are in the `build` folder for as1 before proceeding
@@ -30,8 +40,13 @@ When the program is running, and the Volume Control window is open, on keyboard:
 Press E to toggle Dark Mode. Pressing E again will disable Dark Mode. 
 Press TAB to cycle between the three sliders. By default, it starts at the SFXVolume slider.
 Use LEFT and RIGHT arrow keys to adjust volume for the selected slider.
+Ping Button activates all sounds from the sliders: sfx, music and dialogue. Either set the volume for each of the sliders individually to play each corresponding track or set the volume for all of the sliders at once to play all the tracks simultaneously. 
 ```
 
+# Extra Credit - Dialogue Track:
+```bash
+assets/audio/skyrim-song-ragnar-the-red-made-with-Voicemod.mp3
+```
 # Assignment Question
 Audio is produced by a speaker by taking and converting electrical signals into sound waves. A magnetic field is then generated where an electrical current travels through coils of wire and causes a cone to vibrate, which in turn pushes and pulls air molecules, creating sound waves that we can then hear. 
 

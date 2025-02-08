@@ -11,9 +11,15 @@ bool isDarkMode = false;
 int selectedSlider = 0;
 
 void PingButton(){
-    ping.Play();
-    crowd.Play();
-    dialogue.Play();
+    if(!ping.IsPlaying()){
+        ping.Play();
+    }
+    if(!dialogue.IsPlaying()){
+        dialogue.Play();
+    }
+    if(!crowd.IsPlaying()){
+        crowd.Play();
+    }
 }
 
 #include "VolumeControl.h"
@@ -27,8 +33,8 @@ int main(){
     text.SetText("Volume Controls");
     
     ping = raylib::Music("../assets/audio/ping.wav");
-    crowd = raylib::Music("../assets/audio/crowd.wav"); //loop indefinitely for music track
-    dialogue = raylib::Music("../assets/audio/price-of-freedom.mp3"); //loop indefinitely for dialogue track
+    dialogue = raylib::Music("../assets/audio/skyrim-song-ragnar-the-red-made-with-Voicemod.mp3"); //loop indefinitely for music track
+    crowd = raylib::Music("../assets/audio/price-of-freedom.mp3"); //loop indefinitely for dialogue track
 
     crowd.SetLooping(true);
     dialogue.SetLooping(true);
@@ -73,7 +79,7 @@ int main(){
         }
         window.ClearBackground(isDarkMode ? BLACK : WHITE); //resets the background back to default white once E is toggled again.
 
-        // DrawText("Press E for Dark Mode", 10, 10, 14, isDarkMode ? WHITE : BLACK);
+        //DrawText("Press E for Dark Mode", 10, 10, 14, isDarkMode ? WHITE : BLACK);
         // DrawText("Press TAB to change sliders", 10, 30, 14, isDarkMode ? WHITE : BLACK);
         // DrawText("Press Left/Right to change volume", 10, 50, 14, isDarkMode ? WHITE : BLACK);
 
