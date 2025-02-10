@@ -89,7 +89,7 @@ int main(){
         
         ping.SetVolume(guiState.SFXSliderValue / 100.0f);
         crowd.SetVolume(guiState.MusicSliderValue / 100.0f);
-        dialogue.SetVolume(guiState.DialogueSliderValue / 100.0f)
+        dialogue.SetVolume(guiState.DialogueSliderValue / 100.0f);
 
         ping.Update();
 
