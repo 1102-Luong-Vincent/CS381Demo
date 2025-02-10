@@ -14,12 +14,6 @@ void PingButton(){
     if(!ping.IsPlaying()){
         ping.Play();
     }
-    if(!dialogue.IsPlaying()){
-        dialogue.Play();
-    }
-    if(!crowd.IsPlaying()){
-        crowd.Play();
-    }
 }
 
 #include "VolumeControl.h"
@@ -33,11 +27,16 @@ int main(){
     text.SetText("Volume Controls");
     
     ping = raylib::Music("../assets/audio/ping.wav");
+    ping.SetLooping(false);
+
     dialogue = raylib::Music("../assets/audio/skyrim-song-ragnar-the-red-made-with-Voicemod.mp3"); //loop indefinitely for music track
     crowd = raylib::Music("../assets/audio/price-of-freedom.mp3"); //loop indefinitely for dialogue track
 
     crowd.SetLooping(true);
     dialogue.SetLooping(true);
+
+    dialogue.Play();
+    crowd.Play();
 
     auto guiState = InitGuiVolumeControl();
     Rectangle buttonBounds = {24, 304, 256, 24}; //button dimensions
@@ -88,15 +87,11 @@ int main(){
         
         GuiVolumeControl(&guiState);
         
-        if (GuiButton(buttonBounds, "Ping")) {
-            ping.SetVolume(guiState.SFXSliderValue / 100.0f);
-            crowd.SetVolume(guiState.MusicSliderValue / 100.0f);
-            dialogue.SetVolume(guiState.DialogueSliderValue / 100.0f);
-            PingButton();  // Calls function that plays the sound
-        }
+        ping.SetVolume(guiState.SFXSliderValue / 100.0f);
+        crowd.SetVolume(guiState.MusicSliderValue / 100.0f);
+        dialogue.SetVolume(guiState.DialogueSliderValue / 100.0f)
 
         ping.Update();
-        ping.SetLooping(false);
 
         crowd.Update();
 
