@@ -43,9 +43,6 @@ int main(){
     auto car = raylib::Model("meshes/sedan.glb");
     car.transform = raylib::Matrix::Identity().Scale(30);
 
-    auto wheel = raylib::Model("meshes/wheel-default.glb");
-    wheel.transform = raylib::Matrix::Identity().Scale(50);
-
     cs381::SkyBox sky("textures/skybox.png");
     Texture2D carTexture = LoadTexture("Textures/colormap.png");
 
