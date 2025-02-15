@@ -8,13 +8,23 @@ concept Transformer = requires(T t, raylib::Matrix m){
 };
 
 void DrawBoundedModel(raylib::Model& model, auto transformer){
+
+    //store the current transformation matrix of the model
     raylib::Matrix backup = model.transform;
+
+    //apply the transformation function to modify the model's transformation matrix
     model.transform = transformer(backup);
+
+    //draw the model with the newly applied transformation
     model.Draw({});
 
+    //computes and gets the transformed bounding box of the model after applying transformations
     BoundingBox box = model.GetTransformedBoundingBox();
+
+    //draw the white bounding box around the model to visualize its space in the scene.
     DrawBoundingBox(box, raylib::Color::White());
 
+    //restore the model's original transformation matrix to avoid unwanted modifications.
     model.transform = backup;
 }
 
