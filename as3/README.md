@@ -23,8 +23,10 @@ Make sure you are in the build folder and make sure that you go into the Raylib'
 ```bash
 Go to as0 folder.
 Open raylib-cpp folder.
+Open raylib folder inside raylib-cpp folder
+Open src folder from the raylib folder
 go to config.h file.
-go to line 162 or `#define SUPPORT_FILEFORMAT_JPG` and change the number to 1 (to enable it).
+go to line 162 or `#define SUPPORT_FILEFORMAT_JPG` and un-comment the line to enable jpg support
 ```
 
 # How to compile my code 
