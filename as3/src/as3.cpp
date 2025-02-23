@@ -2,7 +2,6 @@
 #include <raylib-cpp.hpp>
 #include "skybox.hpp"
 #include "color.hpp"
-#include <functional>
 
 void DrawBoundedModel(raylib::Model& model, auto transformer) {
     raylib::Matrix backup = model.transform;
@@ -27,7 +26,7 @@ int main() {
     float coneHeading = -90.0f;  // Facing left
     float coneSpeed = 0.0f;
     float speedIncrease = 2.0f;
-    float maxSpeed = 30.0f;
+    float maxSpeed = 25.0f;
     float angleStep = 1.0f;
     float coneLift = 15.0f;
     bool isFlying = false;
@@ -48,13 +47,17 @@ int main() {
     while (!window.ShouldClose()) {
         
         // Handle speed control
-        if (raylib::Keyboard::IsKeyPressed(KEY_W)) {
+        if (raylib::Keyboard::IsKeyDown(KEY_W)) {
             coneSpeed += speedIncrease;
-            if (coneSpeed > maxSpeed) coneSpeed = maxSpeed;
+            if (coneSpeed > maxSpeed){
+                coneSpeed = maxSpeed;
+            } 
         }
         if (raylib::Keyboard::IsKeyPressed(KEY_S)) {
             coneSpeed -= speedIncrease;
-            if (coneSpeed < 0) coneSpeed = 0;
+            if (coneSpeed < 0){
+                coneSpeed = 0;
+            }
         }
         if (raylib::Keyboard::IsKeyDown(KEY_A)) {
             coneHeading += angleStep;

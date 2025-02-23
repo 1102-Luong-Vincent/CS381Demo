@@ -269,16 +269,4 @@ CMakeFiles/as3.dir/src/as3.cpp.o: /mnt/c/CS381/as3/src/as3.cpp \
  /mnt/c/CS381/as3/src/../generated/skybox.fs \
  /mnt/c/CS381/as3/src/../generated/cubemap.vs \
  /mnt/c/CS381/as3/src/../generated/cubemap.fs \
- /mnt/c/CS381/as3/raylib-cpp/include/color.hpp \
- /usr/include/c++/11/functional /usr/include/c++/11/tuple \
- /usr/include/c++/11/bits/uses_allocator.h \
- /usr/include/c++/11/bits/invoke.h /usr/include/c++/11/bits/refwrap.h \
- /usr/include/c++/11/bits/std_function.h \
- /usr/include/c++/11/unordered_map \
- /usr/include/c++/11/ext/aligned_buffer.h \
- /usr/include/c++/11/bits/hashtable.h \
- /usr/include/c++/11/bits/hashtable_policy.h \
- /usr/include/c++/11/bits/enable_special_members.h \
- /usr/include/c++/11/bits/node_handle.h \
- /usr/include/c++/11/bits/unordered_map.h \
- /usr/include/c++/11/bits/erase_if.h
+ /mnt/c/CS381/as3/raylib-cpp/include/color.hpp
