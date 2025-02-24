@@ -1,7 +1,6 @@
 #include <iostream>
 #include <raylib-cpp.hpp>
 #include "skybox.hpp"
-#include "color.hpp"
 
 void DrawBoundedModel(raylib::Model& model, auto transformer) {
     raylib::Matrix backup = model.transform;
@@ -14,16 +13,11 @@ int main() {
     raylib::Window window(800, 600, "CS381 - Assignment 3");
     window.SetState(FLAG_WINDOW_RESIZABLE);
 
-    raylib::Vector3 frontWheelLeft  = { -10.0f, -8.0f,  17.0f };
-    raylib::Vector3 frontWheelRight = {  10.0f, -8.0f,  17.0f };
-    raylib::Vector3 backWheelLeft   = { -10.0f, -8.0f, -17.0f };
-    raylib::Vector3 backWheelRight  = {  10.0f, -8.0f, -17.0f };
-
     cs381::SkyBox sky("textures/skybox.png");
     raylib::Model model("../assets/Kenny Car Kit/race.glb");
     model.transform = raylib::Matrix::Identity().Scale(5).RotateY(90 * DEG2RAD);
 
-    float coneHeading = -90.0f;  // Facing left
+    float coneHeading = -90.0f;
     float coneSpeed = 0.0f;
     float speedIncrease = 2.0f;
     float maxSpeed = 25.0f;

@@ -312,22 +312,7 @@ CMakeFiles/as3.dir/src/as3.cpp.o: ../src/as3.cpp \
   ../generated/skybox.vs \
   ../generated/skybox.fs \
   ../generated/cubemap.vs \
-  ../generated/cubemap.fs \
-  ../raylib-cpp/include/color.hpp \
-  /usr/include/c++/11/functional \
-  /usr/include/c++/11/tuple \
-  /usr/include/c++/11/bits/uses_allocator.h \
-  /usr/include/c++/11/bits/invoke.h \
-  /usr/include/c++/11/bits/refwrap.h \
-  /usr/include/c++/11/bits/std_function.h \
-  /usr/include/c++/11/unordered_map \
-  /usr/include/c++/11/ext/aligned_buffer.h \
-  /usr/include/c++/11/bits/hashtable.h \
-  /usr/include/c++/11/bits/hashtable_policy.h \
-  /usr/include/c++/11/bits/enable_special_members.h \
-  /usr/include/c++/11/bits/node_handle.h \
-  /usr/include/c++/11/bits/unordered_map.h \
-  /usr/include/c++/11/bits/erase_if.h
+  ../generated/cubemap.fs
 
 CMakeFiles/as3.dir/src/skybox.cpp.o: ../src/skybox.cpp \
   /usr/include/stdc-predef.h \
@@ -644,20 +629,6 @@ CMakeFiles/as3.dir/src/skybox.cpp.o: ../src/skybox.cpp \
   ../raylib-cpp/raylib/src/rlgl.h
 
 
-/usr/include/c++/11/bits/unordered_map.h:
-
-/usr/include/c++/11/bits/hashtable_policy.h:
-
-/usr/include/c++/11/unordered_map:
-
-/usr/include/c++/11/bits/refwrap.h:
-
-/usr/include/c++/11/bits/invoke.h:
-
-/usr/include/c++/11/bits/uses_allocator.h:
-
-/usr/include/c++/11/tuple:
-
 ../generated/cubemap.fs:
 
 ../generated/skybox.fs:
@@ -780,8 +751,6 @@ CMakeFiles/as3.dir/src/skybox.cpp.o: ../src/skybox.cpp \
 
 ../raylib-cpp/include/Camera2D.hpp:
 
-/usr/include/c++/11/bits/hashtable.h:
-
 ../raylib-cpp/include/Matrix.hpp:
 
 /usr/include/c++/11/bits/stl_construct.h:
@@ -833,8 +802,6 @@ CMakeFiles/as3.dir/src/skybox.cpp.o: ../src/skybox.cpp \
 /usr/include/x86_64-linux-gnu/bits/waitstatus.h:
 
 /usr/include/c++/11/tr1/special_function_util.h:
-
-/usr/include/c++/11/functional:
 
 /usr/include/linux/errno.h:
 
@@ -936,8 +903,6 @@ CMakeFiles/as3.dir/src/skybox.cpp.o: ../src/skybox.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
 
-/usr/include/c++/11/bits/std_function.h:
-
 /usr/include/c++/11/bits/stl_tempbuf.h:
 
 /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
@@ -1002,11 +967,7 @@ CMakeFiles/as3.dir/src/skybox.cpp.o: ../src/skybox.cpp \
 
 /usr/include/c++/11/math.h:
 
-/usr/include/c++/11/ext/aligned_buffer.h:
-
 /usr/include/x86_64-linux-gnu/sys/types.h:
-
-/usr/include/c++/11/bits/erase_if.h:
 
 /usr/include/c++/11/bits/ptr_traits.h:
 
@@ -1080,8 +1041,6 @@ CMakeFiles/as3.dir/src/skybox.cpp.o: ../src/skybox.cpp \
 
 /usr/include/c++/11/bits/locale_classes.tcc:
 
-/usr/include/c++/11/bits/node_handle.h:
-
 /usr/include/c++/11/iostream:
 
 /usr/include/x86_64-linux-gnu/bits/fp-fast.h:
@@ -1121,8 +1080,6 @@ CMakeFiles/as3.dir/src/skybox.cpp.o: ../src/skybox.cpp \
 /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
 
 /usr/include/c++/11/bits/locale_facets.tcc:
-
-/usr/include/c++/11/bits/enable_special_members.h:
 
 /usr/include/c++/11/bits/basic_ios.tcc:
 
@@ -1183,8 +1140,6 @@ CMakeFiles/as3.dir/src/skybox.cpp.o: ../src/skybox.cpp \
 /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h:
 
 /usr/include/x86_64-linux-gnu/bits/mathcalls.h:
-
-../raylib-cpp/include/color.hpp:
 
 /usr/include/c++/11/bits/postypes.h:
 

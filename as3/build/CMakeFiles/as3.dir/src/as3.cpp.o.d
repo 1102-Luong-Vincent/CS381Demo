@@ -268,5 +268,4 @@ CMakeFiles/as3.dir/src/as3.cpp.o: /mnt/c/CS381/as3/src/as3.cpp \
  /mnt/c/CS381/as3/src/../generated/skybox.vs \
  /mnt/c/CS381/as3/src/../generated/skybox.fs \
  /mnt/c/CS381/as3/src/../generated/cubemap.vs \
- /mnt/c/CS381/as3/src/../generated/cubemap.fs \
- /mnt/c/CS381/as3/raylib-cpp/include/color.hpp
+ /mnt/c/CS381/as3/src/../generated/cubemap.fs
