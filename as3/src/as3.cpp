@@ -21,7 +21,7 @@ int main() {
     float coneSpeed = 0.0f;
     float speedIncrease = 2.0f;
     float maxSpeed = 25.0f;
-    float angleStep = 1.0f;
+    float angleStep = 15.0f;
     float coneLift = 15.0f;
     bool isFlying = false;
     
@@ -53,10 +53,10 @@ int main() {
                 coneSpeed = 0;
             }
         }
-        if (raylib::Keyboard::IsKeyDown(KEY_A)) {
+        if (raylib::Keyboard::IsKeyPressed(KEY_A)) {
             coneHeading += angleStep;
         }
-        if (raylib::Keyboard::IsKeyDown(KEY_D)) {
+        if (raylib::Keyboard::IsKeyPressed(KEY_D)) {
             coneHeading -= angleStep;
         }
         if (raylib::Keyboard::IsKeyPressed(KEY_SPACE)) {
