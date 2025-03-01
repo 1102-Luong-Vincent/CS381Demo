@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/as4.dir/src/as4.cpp.o CMakeFiles/as4.dir/src/obstacle.cpp.o CMakeFiles/as4.dir/src/player.cpp.o -o as4  raylib-cpp/raylib/raylib/libraylib.a -lm -lpthread /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/librt.a -lm -ldl 
