@@ -17,7 +17,17 @@ Then in as5 folder, use the commands:
 mkdir build
 cd build
 ```
-Make sure you are in the build folder before proceeding. 
+Make sure you are in the build folder and make sure that you go into the Raylib's config.h and enable jpg support before proceeding. 
+
+# How to enable JPG Support
+```bash
+Go to as0 folder.
+Open raylib-cpp folder.
+Open raylib folder inside raylib-cpp folder
+Open src folder from the raylib folder
+go to config.h file.
+go to line 162 or `#define SUPPORT_FILEFORMAT_JPG` and un-comment the line to enable jpg support
+```
 
 # How to compile my code 
 To compile my code, use the commands:
@@ -43,6 +53,12 @@ Press Space to reset the car's velocity to zero.
 Press TAB to select between the different entities.
 ```
 
+# Extra Credit
+```bash
+Added Mouse Selection. Using LEFT MOUSE BUTTON and clicking on any of the models will select and choose that entity for you to control. 
+
+Controls are still the same.
+```
 # Readme Question
 My selection management system enables the user to interactively choose different entities within the 3D environment using keyboard by pressing TAB. In addition, each entity has a bounding box with `selectedEntity` as the pointer that keeps track of the currently selected entity. Pressing TAB will allow the user to update `selectedEntity` and move to the next entity. By using this selection management system, this allows for smooth transitions between entities.
 
