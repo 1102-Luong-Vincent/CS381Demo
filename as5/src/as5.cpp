@@ -1,11 +1,12 @@
+#include <iostream>
 #include <raylib-cpp.hpp>
-#include <vector>
 #include "skybox.hpp"
 #include "CO.hpp"
+#include <vector>
 
 cs381::Entity* selectedEntity = nullptr;
 
-void DrawBoundedModel(raylib::Model& model, auto transformer) {
+void DrawBoundedModel(raylib::Model& model, auto transformer){
     raylib::Matrix backup = model.transform;
     model.transform = transformer(backup);
     model.Draw({});
@@ -13,104 +14,44 @@ void DrawBoundedModel(raylib::Model& model, auto transformer) {
     model.transform = backup;
 }
 
-void DrawModel(raylib::Model& model, auto transformer) {
+void DrawModel(raylib::Model& model, auto transformer){
     raylib::Matrix backup = model.transform;
     model.transform = transformer(backup);
     model.Draw({});
     model.transform = backup;
 }
 
-struct MeshRenderComponent : cs381::Component {
-    raylib::Model* model = nullptr;
+struct Entity{
+    raylib::Vector3 position;
+    float movement;
+    float rotation;
+    float lift;
+    bool isRocket;
 
-    MeshRenderComponent(cs381::Entity& e, raylib::Model* model)
-        : cs381::Component(e), model(model) {}
+    Entity(raylib::Vector3 position, bool rocket = false)
+        : position(position), rotation(0.0f), lift(0.0f), movement(0.0f), isRocket(rocket) {}
 
-    void Tick(float dt) override {
-        cs381::Component::Tick(dt);
-        if (model == nullptr) return;
-
-        DrawModel(*model, [this](raylib::Matrix& matrix) {
-            auto& transform = Object().Transform();
-            return matrix.Translate(transform.position).RotateY(transform.heading);
-        });
-
-        if (&Object() == selectedEntity) {
-            DrawBoundedModel(*model, [this](raylib::Matrix& matrix) {
-                auto& transform = Object().Transform();
-                return matrix.Translate(transform.position).RotateY(transform.heading);
-            });
+        void Tick(float dt) {
+            float radians = rotation * DEG2RAD;
+            
+            if (isRocket) { //movement for rocket
+                position.x += -sin(radians) * movement * dt;
+                position.y += cos(radians) * movement * dt;
+                position.z += 0;
+    
+                if (position.y < 0.0f) { //checks for position, so no objects will go below ground
+                    position.y = 0.0f;
+                    movement = 0.0f;
+                }
+            } 
+            else { //movement for car
+                position.x += sin(radians) * movement * dt;
+                position.z += cos(radians) * movement * dt;
+            }
         }
-    }
 };
 
-struct PhysicsComponent : cs381::Component {
-    float speed = 0.0f; // Speed of the entity
-    bool isRocket = false; // Whether the entity is a rocket
-    raylib::Vector3 velocity = raylib::Vector3::Zero(); // Velocity vector
-
-    PhysicsComponent(cs381::Entity& e, bool isRocketCheck)
-        : cs381::Component(e), isRocket(isRocketCheck) {}
-
-    void Tick(float dt) override {
-        cs381::Component::Tick(dt);
-        auto& transform = Object().Transform();
-
-        // Calculate movement direction based on heading
-        float radians = (float)transform.heading * DEG2RAD; // Convert heading to radians
-
-        if (isRocket) {
-            // Rocket moves in 3D space
-            velocity.x = sin(radians) * speed; // X-axis movement
-            //velocity.y = 0.0f; // Y-axis movement (controlled separately)
-            velocity.y = cos(radians) * speed; // Z-axis movement
-        } else {
-            // Car moves in XZ plane
-            velocity.x = sin(radians) * speed;
-            velocity.z = cos(radians) * speed;
-        }
-
-        // Update position based on velocity
-        transform.position += velocity * dt;
-
-        // Prevent rocket from going below ground
-        if (isRocket && transform.position.y < 0.0f) {
-            transform.position.y = 0.0f;
-            velocity.y = 0.0f;
-        }
-    }
-
-    void IncreaseSpeed(float amount) {
-        speed += amount;
-    }
-
-    void DecreaseSpeed(float amount) {
-        speed -= amount;
-    }
-
-    void Rotate(float angle) {
-        Object().Transform().heading += angle;
-    }
-
-    void ResetSpeed() {
-        speed = 0.0f;
-        velocity = raylib::Vector3::Zero(); // Explicitly construct a Vector3
-    }
-
-    void MoveUp(float amount) {
-        if (isRocket) {
-            velocity.z += amount;
-        }
-    }
-
-    void MoveDown(float amount) {
-        if (isRocket) {
-            velocity.z -= amount;
-        }
-    }
-};
-
-void HandleMouseSelection(raylib::Camera& camera, cs381::Entity* entities, int maxEntities) {
+void HandleMouseSelection(raylib::Camera& camera, std::vector<Entity>& entities, size_t& selected_entity, raylib::Model& rocket, raylib::Model& car) {
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         // Get the mouse position
         raylib::Vector2 mousePosition = GetMousePosition();
@@ -119,74 +60,61 @@ void HandleMouseSelection(raylib::Camera& camera, cs381::Entity* entities, int m
         raylib::Ray ray = camera.GetMouseRay(mousePosition);
 
         // Check for collisions with each entity
-        for (int i = 0; i < maxEntities; i++) {
-            auto meshRender = entities[i].GetComponent<MeshRenderComponent>();
-            if (meshRender && meshRender->get().model) {
-                // Get the model's transformation matrix
-                raylib::Matrix transform = MatrixMultiply(
-                    MatrixTranslate(meshRender->get().Object().Transform().position.x,
-                                    meshRender->get().Object().Transform().position.y,
-                                    meshRender->get().Object().Transform().position.z),
-                    MatrixRotateY(static_cast<float>(meshRender->get().Object().Transform().heading) * DEG2RAD)
-                );
+        for (size_t i = 0; i < entities.size(); i++) {
+            auto& e = entities[i];
 
+            auto transform = raylib::Matrix::Identity()
+                .Translate(e.position)
+                .RotateY(e.rotation * DEG2RAD);
+                
                 // Transform the bounding box
-                raylib::BoundingBox bbox = meshRender->get().model->GetBoundingBox();
-                bbox.min = Vector3Transform(bbox.min, transform);
-                bbox.max = Vector3Transform(bbox.max, transform);
+                raylib::BoundingBox boundBox;
+                if(e.isRocket){
+                    boundBox = rocket.GetTransformedBoundingBox();
+                }
+                else{
+                    boundBox = car.GetTransformedBoundingBox();
+                }
+
+                //apply the transformation to the bounding boxes
+                boundBox.min = Vector3Transform(boundBox.min, transform);
+                boundBox.max = Vector3Transform(boundBox.max, transform);
 
                 // Check for collision between the ray and the bounding box
-                raylib::RayCollision collision = ray.GetCollision(bbox);
+                raylib::RayCollision collision = ray.GetCollision(boundBox);
 
                 if (collision.hit) {
-                    // Select the entity if a collision is detected
-                    selectedEntity = &entities[i];
+                    selected_entity = i;
                     break;
                 }
-            }
         }
     }
 }
 
-int main() {
-    raylib::Window window(800, 600, "CS381 - Assignment 5");
+int main(){
 
-    // Setup camera
+    raylib::Window window(800, 600, "CS 381 - Assignment 5");
+    window.SetState(FLAG_WINDOW_RESIZABLE);
+
     auto camera = raylib::Camera(
         {0, 80, -200}, 
         {0, 20, 0},  
         {0, 1 ,0},
-        45,
-        CAMERA_PERSPECTIVE
+        45
     );
 
-    // Load models
-    raylib::Model carModel("meshes/sedan.glb");
-    carModel.transform = raylib::Matrix::Identity().Scale(15);
-    raylib::Model rocketModel("meshes/rocket.glb");
-    rocketModel.transform = raylib::Matrix::Identity().Scale(15);
+    std::vector<Entity> entities;
+    size_t selected_entity = 0;
 
-    // Initialize entities
-    const int MAX_ENTITIES = 3;
-    cs381::Entity entities[MAX_ENTITIES];
-    int selectedIndex = 0;
+    entities.emplace_back(raylib::Vector3(0, 0, 0), true);
+    entities.emplace_back(raylib::Vector3(30, 0, 0), false);
+    entities.emplace_back(raylib::Vector3(-30, 0, 0), false);
 
-    // Car 1
-    entities[0].AddComponent<MeshRenderComponent>(&carModel);
-    entities[0].AddComponent<PhysicsComponent>(false);
-    entities[0].Transform().position = raylib::Vector3{-30.0f, 0.0f, 0.0f};
+    auto rocket = raylib::Model("meshes/rocket.glb");
+    rocket.transform = raylib::Matrix::Identity().Scale(15);
 
-    // Car 2
-    entities[1].AddComponent<MeshRenderComponent>(&carModel);
-    entities[1].AddComponent<PhysicsComponent>(false);
-    entities[1].Transform().position = raylib::Vector3{30.0f, 0.0f, 0.0f};
-
-    // Rocket
-    entities[2].AddComponent<MeshRenderComponent>(&rocketModel);
-    entities[2].AddComponent<PhysicsComponent>(true);
-    entities[2].Transform().position = raylib::Vector3{0.0f, 0.0f, 0.0f};
-
-    selectedEntity = &entities[selectedIndex];
+    auto car = raylib::Model("meshes/sedan.glb");
+    car.transform = raylib::Matrix::Identity().Scale(15);
 
     cs381::SkyBox sky("textures/skybox.png");
 
@@ -195,64 +123,91 @@ int main() {
     raylib::Texture grassTexture = raylib::Texture("../assets/textures/grass.jpg");
     grass.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = grassTexture;
 
-    while (!window.ShouldClose()) {
-        float dt = GetFrameTime();
+    while(!window.ShouldClose()){
 
-        // Selection system
-        if (IsKeyPressed(KEY_TAB)) {
-            selectedIndex = (selectedIndex + 1) % MAX_ENTITIES;
-            selectedEntity = &entities[selectedIndex];
+        auto dt = window.GetFrameTime();
+        Entity& selectedEntity = entities[selected_entity];
+
+        if(selectedEntity.isRocket){
+            if (raylib::Keyboard::IsKeyPressed(KEY_W)) {
+                selectedEntity.movement += 5.0f;
+            }
+            if (raylib::Keyboard::IsKeyPressed(KEY_S)) {
+                selectedEntity.movement -= 5.0f;
+            }
+            if (raylib::Keyboard::IsKeyPressed(KEY_A)) {
+                selectedEntity.rotation += 7.0f;
+            }
+            if (raylib::Keyboard::IsKeyPressed(KEY_D)) {
+                selectedEntity.rotation -= 7.0f;
+            }
         }
-
-        // Mouse selection
-        HandleMouseSelection(camera, entities, MAX_ENTITIES);
-
-        auto physics = selectedEntity->GetComponent<PhysicsComponent>();
-        if (physics) {
-            if(raylib::Keyboard::IsKeyPressed(KEY_W)){
-                physics->get().IncreaseSpeed(5.0f);
-            } 
-            if(raylib::Keyboard::IsKeyPressed(KEY_S)){
-                physics->get().DecreaseSpeed(5.0f);
-            } 
-            if(raylib::Keyboard::IsKeyPressed(KEY_A)){
-                physics->get().Rotate(5.0f);
-            } 
-            if(raylib::Keyboard::IsKeyPressed(KEY_D)){
-                physics->get().Rotate(-5.0f);
+        else{
+            if (raylib::Keyboard::IsKeyPressed(KEY_W)) {
+                selectedEntity.movement += 5.0f;
+            }
+            if (raylib::Keyboard::IsKeyPressed(KEY_S)) {
+                selectedEntity.movement -= 5.0f;
+            }
+            if (raylib::Keyboard::IsKeyPressed(KEY_A)) {
+                selectedEntity.rotation += 7.0f;
+            }    
+            if (raylib::Keyboard::IsKeyPressed(KEY_D)) {
+                selectedEntity.rotation -= 7.0f;
             }
             if(raylib::Keyboard::IsKeyPressed(KEY_SPACE)){
-                physics->get().ResetSpeed();
-            } 
-
-            // Rocket-specific controls for 3D movement
-            if (physics->get().isRocket){
-                if (raylib::Keyboard::IsKeyPressed(KEY_UP)){
-                    physics->get().MoveUp(5.0f); // Move up
-                } 
-                if (raylib::Keyboard::IsKeyPressed(KEY_DOWN)){
-                    physics->get().MoveDown(5.0f); // Move down
-                } 
+                //car only
+                selectedEntity.movement = 0.0f;
             }
         }
 
-        for (int i = 0; i < MAX_ENTITIES; i++) {
-            entities[i].Tick(dt);
+        HandleMouseSelection(camera, entities, selected_entity, rocket, car);
+
+        if(raylib::Keyboard::IsKeyPressed(KEY_TAB)){
+            selected_entity = (selected_entity + 1) % entities.size();
         }
 
-        for (int i = 0; i < MAX_ENTITIES; i++) {
-            auto physics = entities[i].GetComponent<PhysicsComponent>();
+        for(auto& e : entities){
+            e.Tick(dt);
         }
-
         window.BeginDrawing();
-        window.ClearBackground(RAYWHITE);
         camera.BeginMode();
+        window.ClearBackground(raylib::Color::Black());
 
         sky.Draw();
         grass.Draw({});
 
-        for (int i = 0; i < MAX_ENTITIES; i++) {
-            entities[i].Tick(dt);
+        for(size_t i = 0; i < entities.size(); ++i){
+            const auto& e = entities[i];
+
+            auto transformer = [&e](raylib::Matrix& transform) {
+                if (e.isRocket) {
+                    return transform
+                    .Translate(e.position)
+                    .RotateZ(e.rotation * DEG2RAD);
+                } 
+                else {
+                    return transform
+                    .Translate(e.position)
+                    .RotateY(e.rotation * DEG2RAD);
+                }
+            };
+            if(i == selected_entity){
+                if (e.isRocket) { 
+                    DrawBoundedModel(rocket, transformer);
+                } 
+                else {
+                    DrawBoundedModel(car, transformer);
+                }
+            }
+            else{
+                if (e.isRocket) { 
+                    DrawModel(rocket, transformer);
+                } 
+                else {
+                    DrawModel(car, transformer);
+                }
+            }
         }
 
         camera.EndMode();
