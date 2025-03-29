@@ -7,7 +7,7 @@ add_subdirectory(raylib-cpp)
 include(includeable.cmake)
 
 add_executable(as6 src/as6.cpp src/skybox.cpp)
-target_link_libraries(as6 PUBLIC raylib raylib_cpp raygui)
+target_link_libraries(as6 PUBLIC raylib raylib_cpp raygui raylib::buffered)
 
 make_includeable(assets/shaders/cubemap.fs generated/cubemap.fs)
 make_includeable(assets/shaders/cubemap.vs generated/cubemap.vs)
