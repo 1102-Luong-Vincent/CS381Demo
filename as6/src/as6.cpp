@@ -1,7 +1,6 @@
 #include <iostream>
 #include <concepts>
 #include<functional>
-
 #include "CO.hpp"
 #include "BufferedRaylib.hpp"
 #include "raylib-cpp.hpp"
