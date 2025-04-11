@@ -2,6 +2,7 @@
 #include "raylib-cpp.hpp"
 #include "skybox.hpp"
 #include "ECS.hpp"
+#include "BufferedRaylib.hpp"
 
 cs381::Entity selectedEntity = 0;
 size_t globalComponentCounter = 0;
@@ -30,6 +31,9 @@ struct MeshRenderComponent{
 struct Physics2DComponent{
     float heading;
     float speed;
+    float acceleration = 10.0f;
+    float maxSpeed = 100.0f;
+    float turningRate = 100.0f;  // degrees per second
 };
 
 struct OrientedPhysics2DComponent{
@@ -40,6 +44,9 @@ struct OrientedPhysics2DComponent{
 struct Physics3DComponent{
     float heading;
     float speed;
+    float acceleration = 10.0f;
+    float maxSpeed = 100.0f;
+    float rotationSpeed = 90.0f; // degrees per second
 };
 
 struct OrientedPhysics3DComponent{
@@ -50,23 +57,32 @@ struct OrientedPhysics3DComponent{
 struct TransformComponent{
     raylib::Vector3 position;
     float heading;
+    raylib::Quaternion rotation = raylib::Quaternion::Identity();
     raylib::Vector3 scale = raylib::Vector3{1.0f, 1.0f, 1.0f};
 };
 
-struct BufferedInputComponent{
-    bool velocity = false;
-    bool decreaseVelocity = false;
-    bool headingLeft = false;
-    bool headingRight = false;
-    bool pitchUp = false;
-    bool pitchDown = false;
-    bool rollLeft = false;
-    bool rollRight = false;
-    bool stop = false;
+struct VelocityComponent {
+    raylib::Vector3 velocity = raylib::Vector3::Zero();
+    float speed = 0.0f;
+    float targetSpeed = 0.0f;
+    bool isMoving = false;
 };
 
 struct SelectionManagementSystem{
-    int selectedIndex = 0;
+    void Update(cs381::Scene<cs381::ComponentStorage>& scene) {
+        // Handle tab press to cycle selection
+        if (IsKeyPressed(KEY_TAB)) {
+            do {
+                selectedEntity = (selectedEntity + 1) % scene.entityMasks.size();
+            } while (!scene.HasComponent<MeshRenderComponent>(selectedEntity));
+        }
+
+        for (cs381::Entity e = 0; e < scene.entityMasks.size(); ++e) {
+            if (!scene.HasComponent<MeshRenderComponent>(e)) continue;
+            auto& render = scene.GetComponent<MeshRenderComponent>(e);
+            render.showBoundingBox = (e == selectedEntity);
+        }
+    }    
 };
 using entity = int;
 
@@ -138,8 +154,9 @@ void Physics2DSystem(cs381::Scene<cs381::ComponentStorage>& scene, float dt){ //
         auto& transform = scene.GetComponent<TransformComponent>(e); //call and get the transform component of the entity.
         auto& physics = scene.GetComponent<OrientedPhysics2DComponent>(e); //call and get the physics component of the entity.
 
-        float rad = DEG2RAD * physics.heading; //convert the heading to radians.
-        raylib::Vector3 forward = {std::sin(rad), 0, std::cos(rad)}; //create a new vector based on the heading of the entity.
+        float radians = DEG2RAD * physics.heading; //convert the heading to radians.
+        raylib::Vector3 forward = {std::sin(radians), 0, std::cos(radians)}; //create a new vector based on the heading of the entity.
+ 
         transform.position += forward * physics.speed * dt; //update the position of the entity based on the velocity and dt.
         transform.heading = physics.heading; //update the heading of the entity.
 
@@ -161,177 +178,20 @@ void Physics3DSystem(cs381::Scene<cs381::ComponentStorage>& scene, float dt){ //
 
         raylib::Matrix rotationMatrix = physics.rotation.ToMatrix(); //get the rotation of the entity.
  
-        raylib::Vector3 forward = raylib::Vector3{0.0f, 0.0f, 1.0f}.Transform(rotationMatrix); //create a new vector based on the rotation of the entity.
+        raylib::Vector3 forward = raylib::Vector3{1.0f, 0.0f, 0.0f}.Transform(rotationMatrix); //create a new vector based on the rotation of the entity.
 
-        //raylib::Vector3 forward = raylib::Vector3{0.0f, 0.0f, 1.0f}.Transform(rotationVelocity);
-        
-        transform.position += forward * physics.velocity.x * dt; //update the position of the entity based on the velocity and dt.
-        //transform.position += physics.velocity * dt;
-
-        //transform.position += rotationVelocity* dt;
-
-        // if(physics.velocity.y < 0.0f){
-        //     physics.velocity.y = 0;
-        // }
-        if(transform.position.y < 0.0f){ //added collision where car models don't go underneath
-            transform.position.y = 0; //set the y position of the entity to 0. 
+        if(physics.velocity.y < 0.0f && transform.position.y <= 0.0f){ //added collision where car models don't go underneath
             physics.velocity.y = 0; //set the y position of the physics to 0 so the model doesn't go underneath the ground. 
+        }
+
+        transform.position += physics.velocity * dt;
+
+        if (transform.position.y < 0.0f){
+            transform.position.y = 0.0f;
         }
     }
 }
 
-void BufferedInputUpdate(cs381::Scene<cs381::ComponentStorage>&scene){
-    if(!scene.HasComponent<BufferedInputComponent>(selectedEntity)) return;
-
-        auto& input = scene.GetComponent<BufferedInputComponent>(selectedEntity);
-
-        input.velocity = IsKeyPressed(KEY_W);
-        input.decreaseVelocity = IsKeyPressed(KEY_S);
-        input.headingLeft = IsKeyPressed(KEY_A);
-        input.headingRight = IsKeyPressed(KEY_D);
-        input.pitchUp = IsKeyPressed(KEY_R);
-        input.pitchDown = IsKeyPressed(KEY_F);
-        input.rollLeft = IsKeyPressed(KEY_Q);
-        input.rollRight = IsKeyPressed(KEY_E);
-        input.stop = IsKeyPressed(KEY_SPACE);
-}
-// void InputComponent(cs381::Scene<cs381::ComponentStorage>& scene){
-//     auto phys2D = scene.GetComponent<OrientedPhysics2DComponent>(selectedEntity);
-//     auto phys3D = scene.GetComponent<OrientedPhysics3DComponent>(selectedEntity);
-
-//     if(scene.HasComponent<OrientedPhysics2DComponent>(selectedEntity)){
-//         auto& physics = scene.GetComponent<OrientedPhysics2DComponent>(selectedEntity);
-
-//         if(IsKeyPressed(KEY_W)){
-//             physics.speed += 5.0f;
-//         }  
-//         if(IsKeyPressed(KEY_S)){
-//             physics.speed -= 5.0f;        
-//         }  
-//         if(IsKeyPressed(KEY_A)){
-//             physics.heading -= 5.0f;
-//         }
-//         if(IsKeyPressed(KEY_D)){ 
-//             physics.heading += 5.0f;
-//         }
-//         if(IsKeyPressed(KEY_SPACE)){
-//             physics.speed = 0;
-//         }
-//     }
-
-//     //pitch 
-//     if(scene.HasComponent<OrientedPhysics3DComponent>(selectedEntity)){
-//         auto& physics = scene.GetComponent<OrientedPhysics3DComponent>(selectedEntity);
-//         auto& q = physics.rotation;
-//         raylib::Vector3 euler = q.ToEuler();
-
-//         // if(IsKeyPressed(KEY_R)){ //increases the entity's pitch
-//         //     q = raylib::Quaternion::FromEuler(euler + raylib::Vector3{DEG2RAD, 0, 0});
-//         // }
-//         // if(IsKeyPressed(KEY_F)){ //decreases the entity's pitch
-//         //     q = raylib::Quaternion::FromEuler(euler - raylib::Vector3(DEG2RAD, 0, 0));
-//         // }
-//         // if(IsKeyPressed(KEY_Q)){
-//         //     q = raylib::Quaternion::FromEuler(euler + raylib::Vector3{0, 0, DEG2RAD});
-//         // }
-//         // if(IsKeyPressed(KEY_E)){
-//         //     q = raylib::Quaternion::FromEuler(euler - raylib::Vector3{0, 0, DEG2RAD});
-//         // }
-
-//         if (IsKeyPressed(KEY_R)) { // Pitch up (tilt)
-//             euler.x += DEG2RAD * 400.0f * GetFrameTime();
-//         }
-//         if (IsKeyPressed(KEY_F)) { // Pitch down (tilt)
-//             euler.x -= DEG2RAD * 400.0f * GetFrameTime();
-//         }
-//         if (IsKeyPressed(KEY_Q)) { // Roll left 
-//             euler.z += DEG2RAD * 400.0f * GetFrameTime();
-//         }
-//         if (IsKeyPressed(KEY_E)) { // Roll right
-//             euler.z -= DEG2RAD * 400.0f * GetFrameTime();
-//         }
-
-//         physics.rotation = raylib::Quaternion::FromEuler(euler);
-
-//         // Thrust control
-//         if (IsKeyPressed(KEY_W)){  //move forward
-//             //physics.velocity.x += 5.0f;
-//             physics.velocity.z += 5.0f * GetFrameTime();
-//             // raylib::Vector3 localForward = { 0, 0, 1 };
-//             // raylib::Vector3 worldForward = physics.rotation.RotateVector(localForward);
-//             // physics.velocity += worldForward * 50.0f * GetFrameTime(); // 50 is thrust strength
-//         }
-//         if (IsKeyPressed(KEY_S)){ //slow down movement
-//             //physics.velocity.x -= 5.0f;
-//             physics.velocity.z -= 5.0f * GetFrameTime();
-//             // raylib::Vector3 localForward = { 0, 0, 1 };
-//             // raylib::Vector3 worldForward = localForward.Transform(physics.rotation.ToMatrix());
-//             // physics.velocity -= worldForward * 50.0f * GetFrameTime(); // 50 is thrust strength
-//         }
-//         if (IsKeyPressed(KEY_SPACE)){ //stop movement
-//             physics.velocity = raylib::Vector3{0.0f, 0.0f, 0.0f};
-//         }
-//     }
-// };
-
-void InputComponent(cs381::Scene<cs381::ComponentStorage>& scene){
-    if(!scene.HasComponent<BufferedInputComponent>(selectedEntity)) return;
-
-        auto& input = scene.GetComponent<BufferedInputComponent>(selectedEntity);
-
-        if(scene.HasComponent<OrientedPhysics2DComponent>(selectedEntity)){
-            auto& physics = scene.GetComponent<OrientedPhysics2DComponent>(selectedEntity);
-
-            if(input.velocity){
-                physics.speed += 5.0f;
-            }  //w
-            if(input.decreaseVelocity){
-                physics.speed -= 5.0f;
-            } //s
-            if(input.headingLeft){
-                physics.heading -= 5.0f;
-            }  //a
-            if(input.headingRight){
-                physics.heading += 5.0f;
-            } //d
-            if(input.stop){
-                physics.speed = 0.0f;
-            } //space
-        }
-
-        if(scene.HasComponent<OrientedPhysics3DComponent>(selectedEntity)){
-            auto& physics = scene.GetComponent<OrientedPhysics3DComponent>(selectedEntity);
-            auto& q = physics.rotation;
-            raylib::Vector3 euler = q.ToEuler();
-            
-            if(input.pitchUp){
-                euler.x += DEG2RAD * 400.0f * GetFrameTime();
-            }  //r
-            if(input.pitchDown){
-                euler.x -= DEG2RAD * 400.0f * GetFrameTime();
-            }   //f 
-            if(input.rollLeft){
-                euler.z += DEG2RAD * 400.0f * GetFrameTime();
-            } //q
-            if(input.rollRight){
-                euler.z -= DEG2RAD * 400.0f * GetFrameTime();
-            }  //e
-
-        physics.rotation = raylib::Quaternion::FromEuler(euler);
-
-        raylib::Vector3 forward = raylib::Vector3{0.0f, 0.0f, 1.0f}.Transform(physics.rotation.ToMatrix());
-
-        if(input.velocity){
-            physics.velocity += forward * 100.0f * GetFrameTime();
-        }
-        if(input.decreaseVelocity){
-            physics.velocity -= forward * 100.0f * GetFrameTime();
-        }
-        if(input.stop){
-            physics.velocity = raylib::Vector3{0.0f, 0.0f, 0.0f};
-        }
-    }    
-}
 
 cs381::Entity CreateRocketEntity(cs381::Scene<cs381::ComponentStorage>& scene, raylib::Model* modelPtr, raylib::Vector3 position = {}, float heading = 0.0f) {
     auto e = scene.CreateEntity(); //create a new entity by calling the scene.
@@ -353,7 +213,9 @@ cs381::Entity CreateRocketEntity(cs381::Scene<cs381::ComponentStorage>& scene, r
     physics3D.rotation = raylib::Quaternion::Identity();
     physics3D.velocity = raylib::Vector3(0.0f, 0.0f, 0.0f);
 
-    scene.AddComponent<BufferedInputComponent>(e);
+    //scene.AddComponent<BufferedInputComponent>(e);
+    scene.AddComponent<VelocityComponent>(e); //added velocity component to the rocket entity.
+    scene.AddComponent<Physics2DComponent>(e);
 
     return e;
 }
@@ -378,11 +240,130 @@ cs381::Entity CreateCarEntity(cs381::Scene<cs381::ComponentStorage>& scene, rayl
     physics3D.rotation = raylib::Quaternion::Identity();
     physics3D.velocity = raylib::Vector3(0.0f, 0.0f, 0.0f);
 
-    scene.AddComponent<BufferedInputComponent>(e);
+    scene.AddComponent<VelocityComponent>(e); //added velocity component to the car entity.
+    scene.AddComponent<Physics3DComponent>(e);
 
     return e;
 }
 
+class InputSystem {
+    private:
+        raylib::BufferedInput input;
+        bool prevF = false;
+        bool prevB = false;
+    
+    public:
+        InputSystem() {
+            // Set up input actions
+            input.actions["forward"] = raylib::Action::key(KEY_W);
+            input.actions["backward"] = raylib::Action::key(KEY_S);
+            input.actions["left"] = raylib::Action::key(KEY_A);
+            input.actions["right"] = raylib::Action::key(KEY_D);
+            input.actions["pitch_up"] = raylib::Action::key(KEY_R);
+            input.actions["pitch_down"] = raylib::Action::key(KEY_F);
+            input.actions["roll_left"] = raylib::Action::key(KEY_Q);
+            input.actions["roll_right"] = raylib::Action::key(KEY_E);
+            input.actions["stop"] = raylib::Action::key(KEY_SPACE);
+        }
+        
+        void Update(cs381::Scene<>& scene, float dt) {        
+            input.PollEvents();
+    
+            if (scene.HasComponent<TransformComponent>(selectedEntity)) {
+                auto& transform = scene.GetComponent<TransformComponent>(selectedEntity);
+            }
+        
+            // Handle 2D physics (cars)
+            if (scene.HasComponent<OrientedPhysics2DComponent>(selectedEntity)) {
+                auto& physics = scene.GetComponent<OrientedPhysics2DComponent>(selectedEntity);
+        
+                if (input.actions["forward"].data.button.last_state > 0) {
+                    physics.speed += 5.0f * dt;
+                }
+                if (input.actions["backward"].data.button.last_state > 0) {
+                    physics.speed -= 5.0f * dt;
+                }
+                if (input.actions["left"].data.button.last_state > 0) {
+                    physics.heading += 90.0f * dt;  // Turn left
+                }
+                if (input.actions["right"].data.button.last_state > 0) {
+                    physics.heading -= 90.0f * dt;  // Turn right
+                }
+                if (input.actions["stop"].data.button.last_state > 0) {
+                    physics.speed = 0.0f;
+                }
+            }
+        
+            // Handle 3D physics (rockets)
+            if (scene.HasComponent<OrientedPhysics3DComponent>(selectedEntity)) {
+                auto& physics = scene.GetComponent<OrientedPhysics3DComponent>(selectedEntity);
+                auto& velocity = scene.GetComponent<VelocityComponent>(selectedEntity);
+                raylib::Vector3 euler = physics.rotation.ToEuler();
+        
+                float turnSpeed = DEG2RAD * 90.0f * dt;
+        
+                if (input.actions["pitch_up"].data.button.last_state > 0) {
+                    euler.x += turnSpeed;
+                }
+                if (input.actions["pitch_down"].data.button.last_state > 0) {
+                    euler.x -= turnSpeed;
+                }
+                if (input.actions["roll_left"].data.button.last_state > 0) {
+                    euler.z += turnSpeed;
+                }
+                if (input.actions["roll_right"].data.button.last_state > 0) {
+                    euler.z -= turnSpeed;
+                }
+        
+                physics.rotation = raylib::Quaternion::FromEuler(euler);
+        
+                raylib::Vector3 forward = raylib::Vector3{0.0f, 0.0f, 1.0f}.Transform(physics.rotation.ToMatrix());
+        
+                if (input.actions["forward"].data.button.last_state > 0) {
+                    velocity.targetSpeed = std::min(velocity.targetSpeed + 20.0f * dt, 100.0f);
+                    prevB = true;
+                }
+                if (input.actions["backward"].data.button.last_state > 0) {
+                    velocity.targetSpeed = std::max(velocity.targetSpeed - 20.0f * dt, 0.0f);
+                    prevB = true;
+                }
+                if (input.actions["stop"].data.button.last_state > 0) {
+                    velocity.targetSpeed = 0.0f;
+                    velocity.velocity = raylib::Vector3::Zero();
+                }
+            }
+        }
+};
+
+void ApplyVelocitySystem(cs381::Scene<cs381::ComponentStorage>& scene) {
+    for (cs381::Entity e = 0; e < scene.entityMasks.size(); ++e) {
+        if (!scene.HasComponent<VelocityComponent>(e)) continue;
+
+        auto& vel = scene.GetComponent<VelocityComponent>(e);
+
+        // Apply for 2D cars
+        if (scene.HasComponent<OrientedPhysics2DComponent>(e) && scene.HasComponent<TransformComponent>(e)) {
+            auto& physics = scene.GetComponent<OrientedPhysics2DComponent>(e);
+            auto& transform = scene.GetComponent<TransformComponent>(e);
+
+            float radians = DEG2RAD * physics.heading;
+            raylib::Vector3 forward = {-std::sin(radians), 0, std::cos(radians)};
+    
+            physics.speed = vel.targetSpeed;
+            vel.velocity = forward * vel.targetSpeed;
+        }
+
+        // Apply for 3D rockets
+        if (scene.HasComponent<OrientedPhysics3DComponent>(e) && scene.HasComponent<TransformComponent>(e)) {
+
+            auto& physics = scene.GetComponent<OrientedPhysics3DComponent>(e);
+            auto& transform = scene.GetComponent<TransformComponent>(e);
+
+            raylib::Vector3 forward = raylib::Vector3{1.0f, 0.0f, 0.0f}.Transform(physics.rotation.ToMatrix());
+            physics.velocity = forward * vel.targetSpeed;
+        }
+    }
+}
 int main(){
 
     raylib::Window window(800, 600, "CS381 - Assignment 8");
@@ -422,6 +403,7 @@ int main(){
     grass.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = grassTexture;
 
     cs381::Scene<cs381::ComponentStorage> scene; //create a new scene.
+    InputSystem inputSystem;
     float carZ = 0.0f;  
     float rocketZ = -100.0f;
     float spacingX = 100.0f;
@@ -439,19 +421,14 @@ int main(){
     CreateCarEntity(scene, &firetruck, {spacingX, 0, carZ}, 90.0f); //calls scene and places car in front of each rocket based on the spacingX variable.
     CreateCarEntity(scene, &taxi, {2 * spacingX, 0, carZ}, 90.0f); //calls scene and places car in front of each rocket based on the spacingX variable.
 
+
     while(!window.ShouldClose()){
 
-        if(IsKeyPressed(KEY_TAB)){
-            do{
-                selectedEntity = (selectedEntity + 1) % scene.entityMasks.size();
-            }
-            while(!scene.HasComponent<MeshRenderComponent>(selectedEntity));
-        }
-
         float dt = GetFrameTime();
-        //InputComponent(scene);
-        BufferedInputUpdate(scene);
-        InputComponent(scene);
+        SelectionManagementSystem selectionSystem;
+        inputSystem.Update(scene, dt); //update the input system.
+        selectionSystem.Update(scene); //update the selection system.
+        ApplyVelocitySystem(scene); //apply the velocity to the entity.
         Physics2DSystem(scene, dt);
         Physics3DSystem(scene, dt);
 
@@ -467,19 +444,22 @@ int main(){
             auto& transform = scene.GetComponent<TransformComponent>(selectedEntity);
 
             raylib::Vector3 currentEntity = transform.position;
-            raylib::Vector3 offset = {0.0f, 150.0f, 500.0f}; //places camera behind and above the entity.
+            raylib::Vector3 offset = {0.0f, 120.0f, 500.0f}; //places camera behind and above the entity.
+            raylib::Vector3 cameraPosition;
 
             if(scene.HasComponent<OrientedPhysics3DComponent>(selectedEntity)){
                 auto& physics = scene.GetComponent<OrientedPhysics3DComponent>(selectedEntity);
-                offset = offset.Transform(physics.rotation.ToMatrix());
+                cameraPosition = offset.Transform(physics.rotation.ToMatrix());
             }
             else{
                 float radians = transform.heading * DEG2RAD;
-                offset.z = offset.z * std::cos(radians) - offset.x * std::sin(radians);
-                offset.x = offset.z * std::sin(radians) + offset.x * std::cos(radians);
+
+                cameraPosition.z = offset.z * std::cos(radians);
+                cameraPosition.y = offset.y;
+                cameraPosition.x = offset.z * std::sin(radians);
             }
-            camera.position = currentEntity + offset;
-            camera.target = currentEntity;
+            camera.position = currentEntity + cameraPosition; //sets the camera position to the entity position minus the offset.
+            camera.target = currentEntity + raylib::Vector3{0.0f, 60.0f, 0.0f};;
         }
         window.BeginDrawing();
         BeginMode3D(camera);

@@ -315,4 +315,21 @@ CMakeFiles/as8.dir/src/as8.cpp.o: /mnt/c/CS381/as8/src/as8.cpp \
  /usr/include/c++/11/ranges /usr/include/c++/11/optional \
  /usr/include/c++/11/bits/enable_special_members.h \
  /usr/include/c++/11/bits/ranges_util.h /usr/include/c++/11/bitset \
- /usr/include/c++/11/variant /usr/include/c++/11/bits/parse_numbers.h
+ /usr/include/c++/11/variant /usr/include/c++/11/bits/parse_numbers.h \
+ /mnt/c/CS381/as8/raylib-cpp/BufferedRaylib/src/BufferedRaylib.hpp \
+ /mnt/c/CS381/as8/raylib-cpp/BufferedRaylib/src/../FastSignals/libfastsignals/include/signal.h \
+ /mnt/c/CS381/as8/raylib-cpp/BufferedRaylib/src/../FastSignals/libfastsignals/include/combiners.h \
+ /mnt/c/CS381/as8/raylib-cpp/BufferedRaylib/src/../FastSignals/libfastsignals/include/connection.h \
+ /mnt/c/CS381/as8/raylib-cpp/BufferedRaylib/src/../FastSignals/libfastsignals/include/signal_impl.h \
+ /mnt/c/CS381/as8/raylib-cpp/BufferedRaylib/src/../FastSignals/libfastsignals/include/function_detail.h \
+ /mnt/c/CS381/as8/raylib-cpp/BufferedRaylib/src/../FastSignals/libfastsignals/include/spin_mutex.h \
+ /usr/include/c++/11/atomic \
+ /mnt/c/CS381/as8/raylib-cpp/BufferedRaylib/src/../FastSignals/libfastsignals/include/function.h \
+ /mnt/c/CS381/as8/raylib-cpp/BufferedRaylib/src/../FastSignals/libfastsignals/include/type_traits.h \
+ /usr/include/c++/11/set /usr/include/c++/11/bits/stl_tree.h \
+ /usr/include/c++/11/bits/node_handle.h \
+ /usr/include/c++/11/bits/stl_set.h \
+ /usr/include/c++/11/bits/stl_multiset.h \
+ /usr/include/c++/11/bits/erase_if.h /usr/include/c++/11/map \
+ /usr/include/c++/11/bits/stl_map.h \
+ /usr/include/c++/11/bits/stl_multimap.h

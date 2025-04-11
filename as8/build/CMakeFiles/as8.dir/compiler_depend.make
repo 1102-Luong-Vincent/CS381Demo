@@ -373,7 +373,26 @@ CMakeFiles/as8.dir/src/as8.cpp.o: ../src/as8.cpp \
   /usr/include/c++/11/bits/ranges_util.h \
   /usr/include/c++/11/bitset \
   /usr/include/c++/11/variant \
-  /usr/include/c++/11/bits/parse_numbers.h
+  /usr/include/c++/11/bits/parse_numbers.h \
+  ../raylib-cpp/BufferedRaylib/src/BufferedRaylib.hpp \
+  ../raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/include/signal.h \
+  ../raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/include/combiners.h \
+  ../raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/include/connection.h \
+  ../raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/include/signal_impl.h \
+  ../raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/include/function_detail.h \
+  ../raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/include/spin_mutex.h \
+  /usr/include/c++/11/atomic \
+  ../raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/include/function.h \
+  ../raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/include/type_traits.h \
+  /usr/include/c++/11/set \
+  /usr/include/c++/11/bits/stl_tree.h \
+  /usr/include/c++/11/bits/node_handle.h \
+  /usr/include/c++/11/bits/stl_set.h \
+  /usr/include/c++/11/bits/stl_multiset.h \
+  /usr/include/c++/11/bits/erase_if.h \
+  /usr/include/c++/11/map \
+  /usr/include/c++/11/bits/stl_map.h \
+  /usr/include/c++/11/bits/stl_multimap.h
 
 CMakeFiles/as8.dir/src/skybox.cpp.o: ../src/skybox.cpp \
   /usr/include/stdc-predef.h \
@@ -690,6 +709,24 @@ CMakeFiles/as8.dir/src/skybox.cpp.o: ../src/skybox.cpp \
   ../raylib-cpp/raylib/src/rlgl.h
 
 
+/usr/include/c++/11/bits/stl_multimap.h:
+
+/usr/include/c++/11/map:
+
+/usr/include/c++/11/bits/stl_multiset.h:
+
+/usr/include/c++/11/bits/stl_set.h:
+
+/usr/include/c++/11/set:
+
+../raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/include/function.h:
+
+/usr/include/c++/11/atomic:
+
+../raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/include/spin_mutex.h:
+
+../raylib-cpp/BufferedRaylib/src/BufferedRaylib.hpp:
+
 /usr/include/c++/11/bits/parse_numbers.h:
 
 /usr/include/c++/11/variant:
@@ -706,6 +743,8 @@ CMakeFiles/as8.dir/src/skybox.cpp.o: ../src/skybox.cpp \
 
 /usr/include/c++/11/bits/stream_iterator.h:
 
+../raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/include/signal_impl.h:
+
 /usr/include/c++/11/backward/auto_ptr.h:
 
 /usr/include/x86_64-linux-gnu/bits/syscall.h:
@@ -713,6 +752,8 @@ CMakeFiles/as8.dir/src/skybox.cpp.o: ../src/skybox.cpp \
 /usr/include/x86_64-linux-gnu/asm/unistd_64.h:
 
 /usr/include/x86_64-linux-gnu/sys/syscall.h:
+
+/usr/include/c++/11/bits/stl_tree.h:
 
 /usr/include/syscall.h:
 
@@ -754,6 +795,8 @@ CMakeFiles/as8.dir/src/skybox.cpp.o: ../src/skybox.cpp \
 
 /usr/include/c++/11/bits/uses_allocator.h:
 
+../raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/include/combiners.h:
+
 /usr/include/c++/11/bit:
 
 /usr/include/c++/11/bits/stl_raw_storage_iter.h:
@@ -781,6 +824,8 @@ CMakeFiles/as8.dir/src/skybox.cpp.o: ../src/skybox.cpp \
 ../raylib-cpp/include/Mouse.hpp:
 
 ../raylib-cpp/include/ModelAnimation.hpp:
+
+/usr/include/c++/11/bits/stl_map.h:
 
 ../raylib-cpp/include/Model.hpp:
 
@@ -953,6 +998,8 @@ CMakeFiles/as8.dir/src/skybox.cpp.o: ../src/skybox.cpp \
 /usr/include/x86_64-linux-gnu/c++/11/bits/cpu_defines.h:
 
 /usr/include/c++/11/exception:
+
+../raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/include/connection.h:
 
 /usr/include/c++/11/cstdint:
 
@@ -1134,6 +1181,8 @@ CMakeFiles/as8.dir/src/skybox.cpp.o: ../src/skybox.cpp \
 
 /usr/include/x86_64-linux-gnu/sys/types.h:
 
+/usr/include/c++/11/bits/erase_if.h:
+
 /usr/include/c++/11/bits/ptr_traits.h:
 
 /usr/include/stdint.h:
@@ -1212,9 +1261,13 @@ CMakeFiles/as8.dir/src/skybox.cpp.o: ../src/skybox.cpp \
 
 /usr/include/c++/11/bits/locale_classes.tcc:
 
+/usr/include/c++/11/bits/node_handle.h:
+
 /usr/include/c++/11/iostream:
 
 /usr/include/x86_64-linux-gnu/bits/fp-fast.h:
+
+../raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/include/type_traits.h:
 
 /usr/include/c++/11/system_error:
 
@@ -1300,6 +1353,8 @@ CMakeFiles/as8.dir/src/skybox.cpp.o: ../src/skybox.cpp \
 
 ../raylib-cpp/include/BoundingBox.hpp:
 
+../raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/include/signal.h:
+
 /usr/include/c++/11/optional:
 
 ../raylib-cpp/include/Vector2.hpp:
@@ -1347,6 +1402,8 @@ CMakeFiles/as8.dir/src/skybox.cpp.o: ../src/skybox.cpp \
 ../raylib-cpp/include/Texture.hpp:
 
 ../raylib-cpp/include/RadiansDegrees.hpp:
+
+../raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/include/function_detail.h:
 
 ../raylib-cpp/include/Camera3D.hpp:
 
