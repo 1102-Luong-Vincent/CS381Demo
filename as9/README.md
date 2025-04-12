@@ -35,10 +35,24 @@ To run my code, use the command:
 
 # Controls
 ```bash
-Press SPACE to jump.
 Press R to restart when you die.
-Press A to switch to left lane
-Press D to switch to right lane
+Press W to move forward
+Press S to move backward
+Press A to move left
+Press D to move right
+Press ENTER to play.
+```
+
+# Extra Credit
+```bash
+Added music
+Added a start game button
+Added a time that can track how long you have survived (UI)
 ```
 
 # README Question
+```bash
+My game is a kind of bullet hell game where you have enemies shooting bullets/blocks at you and you have to dodge them. The game doesn't have a win condition. You are just meant to survive as long as possible. I added a homing sort of mechanic to the bullets where the bullets will move towards the player. Use the controls W, A, S, and D to move up, down, left, and right to dodge the bullets. 
+
+The game starts off at a start screen where you have to press ENTER to start the game. If you die, you can press R to restart. 
+```
