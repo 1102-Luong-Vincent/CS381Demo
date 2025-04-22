@@ -8,17 +8,6 @@ git submodule update --init --recursive
 ```
 This is how you fetch my git submodules.
 
-Make sure to delete the build folder before proceeding:
-```bash
-rm -rf build
-```
-Then in as10 folder, use the commands:
-```bash
-mkdir build
-cd build
-```
-Make sure you are in the build folder before proceeding. 
-
 # How to compile my code 
 No compilation is needed — this is a Godot project using GDScript.
 
@@ -35,6 +24,7 @@ To run my code, go into Godot and:
 Click Play and click Host
 Open Godot again, click Play and click Join (make sure to type in the IP Address that you connecting to before clicking join.)
 ```
+Note: I tested this with two instances of Godot running on the same machine, so I could host and join with the IP address from my machine.
 
 # Controls
 ```bash
