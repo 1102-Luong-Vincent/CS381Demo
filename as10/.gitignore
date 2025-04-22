@@ -1,0 +1,22 @@
+# Godot-generated files (cache and imports)
+.import/
+.export/
+*.import
+*.tmp
+*.translation
+.godot/
+imported/
+shader_cache/
+uid_cache.bin
+
+# Exported builds (do not include!)
+*.exe
+*.pck
+*.zip
+*.apk
+*.x86_64
+*.app
+
+# Editor config
+.vscode/
+.idea/
