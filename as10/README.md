@@ -18,6 +18,7 @@ Click "Import Project"
 Select the project.godot file inside the as10/ folder
 Click Play (or press F5) to run
 ```
+
 # To run my code:
 To run my code, go into Godot and:
 ```bash
